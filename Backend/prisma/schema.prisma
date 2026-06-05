@@ -1,0 +1,205 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enum
+enum Role {
+  SUPER_ADMIN
+  CANTEEN_ADMIN
+  BUYER
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// User
+
+model User {
+  id String @id @default(uuid())
+
+  name String
+
+  email String @unique
+
+  password String?
+
+  googleId String? @unique
+
+  avatar String?
+
+  role Role
+
+  status UserStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  canteen Canteen?
+
+  orders Order[]
+
+  canteenRequests CanteenRequest[]
+}
+
+// Kantin
+model Canteen {
+  id String @id @default(uuid())
+
+  ownerId String @unique
+
+  name        String
+  description String?
+
+  imageUrl String?
+
+  isOpen Boolean @default(false)
+
+  owner User @relation(fields: [ownerId], references: [id])
+
+  categories Category[]
+  menus      Menu[]
+  orders     Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Kategori
+model Category {
+  id String @id @default(uuid())
+
+  name String
+
+  canteenId String
+
+  canteen Canteen @relation(fields: [canteenId], references: [id])
+
+  menus Menu[]
+
+  createdAt DateTime @default(now())
+}
+
+// Menu
+model Menu {
+  id String @id @default(uuid())
+
+  canteenId  String
+  categoryId String?
+
+  name String
+
+  description String?
+
+  price Decimal @db.Decimal(10, 2)
+
+  imageUrl String?
+
+  isAvailable Boolean @default(true)
+
+  isDeleted Boolean @default(false)
+
+  canteen Canteen @relation(fields: [canteenId], references: [id])
+
+  category Category? @relation(fields: [categoryId], references: [id])
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Order
+model Order {
+  id String @id @default(uuid())
+
+  buyerId   String
+  canteenId String
+
+  queueNumber String
+
+  totalPrice Decimal @db.Decimal(10, 2)
+
+  status OrderStatus @default(PENDING)
+
+  buyer User @relation(fields: [buyerId], references: [id])
+
+  canteen Canteen @relation(fields: [canteenId], references: [id])
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// OrderItem
+model OrderItem {
+  id String @id @default(uuid())
+
+  orderId String
+
+  menuId String
+
+  quantity Int
+
+  price Decimal @db.Decimal(10, 2)
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  menu Menu @relation(fields: [menuId], references: [id])
+}
+
+// Antrean
+model QueueCounter {
+  id String @id @default(uuid())
+
+  canteenId String
+
+  lastNumber Int @default(0)
+
+  date String
+
+  createdAt DateTime @default(now())
+}
+
+model CanteenRequest {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  name        String
+  description String?
+  imageUrl    String?
+
+  status RequestStatus @default(PENDING)
+
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+}
