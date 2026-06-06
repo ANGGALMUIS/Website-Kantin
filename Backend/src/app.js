@@ -19,6 +19,10 @@ import categoryRoutes from "./routes/category.routes.js";
 import canteenRequestRoutes from "./routes/canteenRequest.routes.js";
 
 const app = express();
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 app.use(cors());
 app.use(express.json());
@@ -35,12 +39,11 @@ app.use("/api/orders", orderRoutes);
 app.use(helmet());
 app.use("/api/upload", uploadRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use(errorHandler);
-
 app.get("/", (req, res) => {
   res.json({
     message: "Kantin Polines API Running",
   });
 });
+app.use(errorHandler);
 
 export default app;
