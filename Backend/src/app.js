@@ -17,6 +17,7 @@ import swaggerSpec from "./config/swagger.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import canteenRequestRoutes from "./routes/canteenRequest.routes.js";
+import healthRoutes from "./routes/health.routes.js";
 
 const app = express();
 app.use((req, res, next) => {
@@ -30,6 +31,7 @@ app.use("/api/auth/login", apiLimiter);
 app.use("/api/auth/register", apiLimiter);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/health", healthRoutes);
 app.use("/api/test", testRoutes);
 app.use("/api/canteens", canteenRoutes);
 app.use("/api/categories", categoryRoutes);
