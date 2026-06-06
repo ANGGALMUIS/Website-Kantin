@@ -16,7 +16,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
-import canteenRequestRoutes from "./routes/canteenrequest.routes.js";
+import canteenRequestRoutes from "./routes/canteenRequest.routes.js";
 
 const app = express();
 
