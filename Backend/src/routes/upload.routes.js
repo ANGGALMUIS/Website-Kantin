@@ -1,9 +1,12 @@
 import { Router } from "express";
+import { Readable } from "stream";
+
 import upload from "../config/multer.js";
+import cloudinary from "../config/cloudinary.js";
 
 const router = Router();
 
-router.post("/", upload.single("image"), (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -12,25 +15,29 @@ router.post("/", upload.single("image"), (req, res) => {
       });
     }
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const streamUpload = () =>
+      new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "kantin-polines",
+          },
+          (error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
+            }
+          },
+        );
 
-    if (!allowedTypes.includes(req.file.mimetype)) {
-      return res.status(400).json({
-        success: false,
-        message: "Format file harus JPG, PNG, atau WEBP",
+        Readable.from(req.file.buffer).pipe(stream);
       });
-    }
 
-    if (req.file.size > 2 * 1024 * 1024) {
-      return res.status(400).json({
-        success: false,
-        message: "Ukuran gambar maksimal 2 MB",
-      });
-    }
+    const result = await streamUpload();
 
     res.json({
       success: true,
-      imageUrl: req.file.path,
+      imageUrl: result.secure_url,
     });
   } catch (error) {
     res.status(500).json({
