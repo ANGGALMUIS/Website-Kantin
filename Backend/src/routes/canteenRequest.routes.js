@@ -5,7 +5,7 @@ import { authenticate } from "../middleware/auth.middleware.js";
 import {
   createCanteenRequest,
   getMyRequest,
-} from "../controllers/canteenrequest.controller.js";
+} from "../controllers/canteenRequest.controller.js";
 
 const router = Router();
 
