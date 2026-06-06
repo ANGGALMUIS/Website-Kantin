@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Home, ShoppingCart, ClipboardList, History, Store } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { Home, ShoppingCart, ClipboardList, History, Store, UtensilsCrossed, Package, UserCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-
+import { useCart } from "../context/CartContext";
 function MobileBottomNav() {
   const { cart } = useCart();
   const { user } = useAuth();
@@ -104,7 +103,7 @@ function MobileBottomNav() {
       "
       >
         <div className="flex">
-          <NavLink to="/admin" className={navClass}>
+          <NavLink to="/admin" end className={navClass}>
             <Home size={20} />
             <span className="text-xs">Dashboard</span>
           </NavLink>
@@ -134,7 +133,7 @@ function MobileBottomNav() {
       "
       >
         <div className="flex">
-          <NavLink to="/canteen" className={navClass}>
+          <NavLink to="/canteen" end className={navClass}>
             <Home size={20} />
             <span className="text-xs">Dashboard</span>
           </NavLink>

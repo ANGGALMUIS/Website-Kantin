@@ -271,11 +271,11 @@ function MenuPage() {
       </div>
 
       {/* Statistik */}
-      <div className="grid md:grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-3 gap-3 md:grid-cols-3 md:gap-5 mb-8">
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <p className="text-slate-500">Total Menu</p>
 
-          <h2 className="text-3xl font-bold mt-2">{stats.total}</h2>
+          <h2 className="text-xl md:text-3xl font-bold mt-2">{stats.total}</h2>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm">
@@ -292,48 +292,153 @@ function MenuPage() {
       </div>
 
       {/* Tabel Menu */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      {/* MOBILE */}
+      <div className="md:hidden space-y-4">
+        {filteredMenus.length === 0 && <div className="bg-white rounded-2xl p-8 text-center text-slate-500">Tidak ada menu ditemukan</div>}
+
+        {filteredMenus.map((menu) => (
+          <div
+            key={menu.id}
+            className="
+        bg-white
+        rounded-2xl
+        p-4
+        shadow-sm
+      "
+          >
+            <div className="flex gap-4">
+              {menu.imageUrl ? (
+                <img
+                  src={menu.imageUrl}
+                  alt={menu.name}
+                  className="
+              w-20
+              h-20
+              rounded-xl
+              object-cover
+              flex-shrink-0
+            "
+                />
+              ) : (
+                <div
+                  className="
+              w-20
+              h-20
+              rounded-xl
+              bg-slate-100
+              flex
+              items-center
+              justify-center
+            "
+                >
+                  <ImageIcon size={24} />
+                </div>
+              )}
+
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-slate-800">{menu.name}</h3>
+
+                <p className="text-sm text-slate-500 line-clamp-2">{menu.description}</p>
+
+                <p className="text-sm text-slate-400 mt-2">{menu.category?.name || "Tanpa Kategori"}</p>
+
+                <p className="font-bold text-orange-600 mt-1">Rp {Number(menu.price).toLocaleString("id-ID")}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-4">
+              <button
+                onClick={() => handleToggleAvailability(menu.id, menu.isAvailable)}
+                className={`
+            px-3
+            py-1
+            rounded-full
+            text-xs
+            ${menu.isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
+          `}
+              >
+                {menu.isAvailable ? "Aktif" : "Nonaktif"}
+              </button>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEdit(menu)}
+                  className="
+              p-2
+              rounded-lg
+              bg-orange-500
+              text-white
+            "
+                >
+                  <Pencil size={16} />
+                </button>
+
+                <button
+                  onClick={() => handleDelete(menu.id)}
+                  className="
+              p-2
+              rounded-lg
+              bg-red-500
+              text-white
+            "
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* DESKTOP */}
+      <div
+        className="
+    hidden
+    md:block
+    bg-white
+    rounded-2xl
+    shadow-sm
+    overflow-hidden
+  "
+      >
         <div
           className="
-    grid
-    grid-cols-12
-    gap-4
-    px-6
-    py-4
-    bg-slate-50
-    border-b
-    border-slate-200
-    font-semibold
-    text-slate-700
-  "
+      grid
+      grid-cols-12
+      gap-4
+      px-6
+      py-4
+      bg-slate-50
+      border-b
+      border-slate-200
+      font-semibold
+      text-slate-700
+    "
         >
           <div className="col-span-5">Menu</div>
-
           <div className="col-span-2">Kategori</div>
-
           <div className="col-span-2">Harga</div>
-
           <div className="col-span-1">Status</div>
-
           <div className="col-span-2">Aksi</div>
         </div>
+
         {filteredMenus.length === 0 && <div className="p-10 text-center text-slate-500">Tidak ada menu ditemukan</div>}
 
         {filteredMenus.map((menu) => (
           <div
             key={menu.id}
             className="
-  grid
-  grid-cols-12
-  gap-4
-  px-6
-  py-5
-  border-b
-  border-slate-100
-  items-center
-  hover:bg-slate-50
-  transition-colors
-"
+        grid
+        grid-cols-12
+        gap-4
+        px-6
+        py-5
+        border-b
+        border-slate-100
+        items-center
+        hover:bg-slate-50
+        transition-colors
+      "
           >
             <div className="col-span-5 flex items-center gap-4">
               {menu.imageUrl ? (
@@ -341,23 +446,23 @@ function MenuPage() {
                   src={menu.imageUrl}
                   alt={menu.name}
                   className="
-                    w-16
-                    h-16
-                    rounded-xl
-                    object-cover
-                  "
+              w-16
+              h-16
+              rounded-xl
+              object-cover
+            "
                 />
               ) : (
                 <div
                   className="
-                    w-16
-                    h-16
-                    rounded-xl
-                    bg-slate-100
-                    flex
-                    items-center
-                    justify-center
-                  "
+              w-16
+              h-16
+              rounded-xl
+              bg-slate-100
+              flex
+              items-center
+              justify-center
+            "
                 >
                   <ImageIcon size={22} className="text-slate-300" />
                 </div>
@@ -378,12 +483,12 @@ function MenuPage() {
               <button
                 onClick={() => handleToggleAvailability(menu.id, menu.isAvailable)}
                 className={`
-                  px-3
-                  py-1
-                  rounded-full
-                  text-xs
-                  ${menu.isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
-                `}
+            px-3
+            py-1
+            rounded-full
+            text-xs
+            ${menu.isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
+          `}
               >
                 {menu.isAvailable ? "Aktif" : "Nonaktif"}
               </button>
@@ -393,12 +498,12 @@ function MenuPage() {
               <button
                 onClick={() => handleEdit(menu)}
                 className="
-                  p-2
-                  rounded-lg
-                  bg-orange-500
-                  hover:bg-orange-600
-                  text-white
-                "
+            p-2
+            rounded-lg
+            bg-orange-500
+            hover:bg-orange-600
+            text-white
+          "
               >
                 <Pencil size={16} />
               </button>
@@ -406,12 +511,12 @@ function MenuPage() {
               <button
                 onClick={() => handleDelete(menu.id)}
                 className="
-                  p-2
-                  rounded-lg
-                  bg-red-500
-                  hover:bg-red-600
-                  text-white
-                "
+            p-2
+            rounded-lg
+            bg-red-500
+            hover:bg-red-600
+            text-white
+          "
               >
                 <Trash2 size={16} />
               </button>

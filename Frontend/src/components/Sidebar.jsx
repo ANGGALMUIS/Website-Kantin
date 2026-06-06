@@ -183,7 +183,7 @@ function Sidebar({ collapsed, setCollapsed }) {
 
         {user?.role === "SUPER_ADMIN" && (
           <>
-            <NavLink to="/admin" className={linkClass}>
+            <NavLink to="/admin" end className={linkClass}>
               <Shield size={20} />
 
               {!collapsed && <span>Dashboard Admin</span>}
@@ -201,27 +201,26 @@ function Sidebar({ collapsed, setCollapsed }) {
       {/* Logout */}
       <div
         className="
-          mx-4
-          p-4
-          border-t
-          border-slate-200
-        "
+    mx-4
+    p-4
+    border-t
+    border-slate-200
+  "
       >
         <button
           onClick={logout}
           title="Keluar"
-          className="
-            w-full
-            flex
-            items-center
-            gap-3
-            text-red-500
-            hover:bg-red-50
-            px-4
-            py-3
-            rounded-2xl
-            transition
-          "
+          className={`
+      w-full
+      flex
+      items-center
+      rounded-2xl
+      text-red-500
+      hover:bg-red-50
+      transition
+      py-3
+      ${collapsed ? "justify-center" : "justify-start gap-3 px-4"}
+    `}
         >
           <LogOut size={20} />
 

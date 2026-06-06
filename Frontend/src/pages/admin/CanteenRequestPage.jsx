@@ -52,7 +52,8 @@ function CanteenRequestsPage() {
     <div>
       <h1 className="text-3xl font-bold mb-6">Pengajuan Kantin</h1>
 
-      <div className="bg-white rounded-2xl shadow overflow-hidden">
+      {/* DESKTOP TABLE */}
+      <div className="hidden md:block bg-white rounded-2xl shadow overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="bg-slate-100">
@@ -72,32 +73,34 @@ function CanteenRequestsPage() {
 
                 <td className="p-4">{request.name}</td>
 
-                <td className="p-4 flex gap-2">
-                  <button
-                    onClick={() => handleApprove(request.id)}
-                    className="
+                <td className="p-4">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleApprove(request.id)}
+                      className="
                       px-4
                       py-2
                       bg-green-500
                       text-white
                       rounded-lg
                     "
-                  >
-                    Approve
-                  </button>
+                    >
+                      Approve
+                    </button>
 
-                  <button
-                    onClick={() => handleReject(request.id)}
-                    className="
+                    <button
+                      onClick={() => handleReject(request.id)}
+                      className="
                       px-4
                       py-2
                       bg-red-500
                       text-white
                       rounded-lg
                     "
-                  >
-                    Reject
-                  </button>
+                    >
+                      Reject
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -105,6 +108,73 @@ function CanteenRequestsPage() {
         </table>
 
         {requests.length === 0 && <div className="p-10 text-center text-slate-500">Tidak ada pengajuan</div>}
+      </div>
+
+      {/* MOBILE CARD */}
+      <div className="md:hidden space-y-4">
+        {requests.length === 0 && <div className="bg-white rounded-2xl shadow p-6 text-center text-slate-500">Tidak ada pengajuan</div>}
+
+        {requests.map((request) => (
+          <div
+            key={request.id}
+            className="
+            bg-white
+            rounded-2xl
+            shadow
+            p-4
+          "
+          >
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-slate-500">Nama User</p>
+
+                <p className="font-semibold">{request.user.name}</p>
+              </div>
+
+              <div>
+                <p className="text-xs text-slate-500">Email</p>
+
+                <p className="break-all">{request.user.email}</p>
+              </div>
+
+              <div>
+                <p className="text-xs text-slate-500">Nama Kantin</p>
+
+                <p className="font-medium">{request.name}</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2 mt-5">
+              <button
+                onClick={() => handleApprove(request.id)}
+                className="
+                flex-1
+                py-3
+                bg-green-500
+                text-white
+                rounded-xl
+                font-medium
+              "
+              >
+                Approve
+              </button>
+
+              <button
+                onClick={() => handleReject(request.id)}
+                className="
+                flex-1
+                py-3
+                bg-red-500
+                text-white
+                rounded-xl
+                font-medium
+              "
+              >
+                Reject
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
