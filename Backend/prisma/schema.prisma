@@ -200,6 +200,6 @@ model CanteenRequest {
   status RequestStatus @default(PENDING)
 
   rejectionReason String?
-
+  proposalUrl String?
   createdAt DateTime @default(now())
 }

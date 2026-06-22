@@ -60,6 +60,7 @@ function CanteenRequestsPage() {
               <th className="p-4 text-left">Nama User</th>
               <th className="p-4 text-left">Email</th>
               <th className="p-4 text-left">Nama Kantin</th>
+              <th className="p-4 text-left">Proposal</th>
               <th className="p-4 text-left">Aksi</th>
             </tr>
           </thead>
@@ -72,6 +73,31 @@ function CanteenRequestsPage() {
                 <td className="p-4">{request.user.email}</td>
 
                 <td className="p-4">{request.name}</td>
+
+                <td className="p-4">
+                  {request.proposalUrl ? (
+                    <a
+                      href={request.proposalUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="
+        inline-flex
+        items-center
+        px-4
+        py-2
+        bg-orange-100
+        text-orange-600
+        rounded-lg
+        hover:bg-orange-200
+        transition
+      "
+                    >
+                      Lihat Proposal
+                    </a>
+                  ) : (
+                    <span className="text-slate-400">Tidak ada file</span>
+                  )}
+                </td>
 
                 <td className="p-4">
                   <div className="flex gap-2">
@@ -141,6 +167,31 @@ function CanteenRequestsPage() {
                 <p className="text-xs text-slate-500">Nama Kantin</p>
 
                 <p className="font-medium">{request.name}</p>
+
+                <div>
+                  <p className="text-xs text-slate-500">Proposal</p>
+
+                  {request.proposalUrl ? (
+                    <a
+                      href={request.proposalUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="
+        inline-block
+        mt-2
+        px-4
+        py-2
+        bg-orange-100
+        text-orange-600
+        rounded-lg
+      "
+                    >
+                      Lihat Proposal
+                    </a>
+                  ) : (
+                    <p className="text-slate-400">Tidak ada file</p>
+                  )}
+                </div>
               </div>
             </div>
 

@@ -97,13 +97,13 @@ export const rejectCanteen = async (req, res) => {
 
 export const getAdminStats = async (req, res) => {
   try {
-   const totalUsers = await prisma.user.count({
-     where: {
-       role: {
-         not: "SUPER_ADMIN",
-       },
-     },
-   });
+    const totalUsers = await prisma.user.count({
+      where: {
+        role: {
+          not: "SUPER_ADMIN",
+        },
+      },
+    });
 
     const totalBuyers = await prisma.user.count({
       where: {
@@ -166,7 +166,14 @@ export const getPendingRequests = async (req, res) => {
         status: "PENDING",
       },
 
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        proposalUrl: true,
+        status: true,
+        createdAt: true,
+
         user: {
           select: {
             id: true,

@@ -7,7 +7,9 @@ export const createCanteenRequest = catchAsync(async (req, res) => {
   console.log("req.user =", req.user);
   console.log("prisma.canteenRequest =", prisma.canteenRequest);
 
-  const { name, description, imageUrl } = req.body;
+  const { name, description, imageUrl, proposalUrl } = req.body;
+  console.log("REQ BODY:", req.body);
+  console.log("PROPOSAL URL:", proposalUrl);
   console.log("=== PRISMA MODELS ===");
   console.log(Object.keys(prisma));
   console.log("canteenRequest =", prisma.canteenRequest);
@@ -31,6 +33,7 @@ export const createCanteenRequest = catchAsync(async (req, res) => {
       name,
       description,
       imageUrl,
+      proposalUrl,
     },
   });
 
